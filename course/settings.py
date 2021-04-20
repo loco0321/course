@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import os
+from datetime import timedelta
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -37,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'course',
+    'scrapper',
 ]
 
 MIDDLEWARE = [
@@ -119,7 +122,17 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-try:
-    exec(open(os.path.join(BASE_DIR, 'course/settings_local.py')).read())
-except IOError:
-    raise Exception('error reading local settings')
+# Celery config
+CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672/'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_ALWAYS_EAGER = False
+
+
+CELERY_BEAT_SCHEDULE = {
+    'tasks_test_course': {
+        'task': 'scrapper.tasks.tasks_test_course',
+        'schedule': timedelta(days=5),
+    },
+}

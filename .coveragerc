@@ -1,0 +1,27 @@
+[run]
+source = .
+omit = */migrations/*, */tests/*, */django_migrations/*, */south_migrations/*, zina_flow/settings.py, zina_flow/wsgi.py, zina_flow/settings_local_example.py, zina_flow/settings_local.py, *apps.py
+
+[report]
+# Regexes for lines to exclude from consideration
+exclude_lines =
+    # Have to re-enable the standard pragma
+    pragma: no cover
+
+    # Don't complain about missing debug-only code:
+    if self\.debug
+    import .*
+    from .*
+    class Meta
+    except ImportError
+
+    # Don't complain if tests don't hit defensive assertion code:
+    raise AssertionError
+    raise NotImplementedError
+
+    # Don't complain if non-runnable code isn't run:
+    if 0:
+    if __name__ == .__main__.:
+
+
+ignore_errors = True
